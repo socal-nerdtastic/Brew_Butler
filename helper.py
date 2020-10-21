@@ -151,3 +151,11 @@ def timer(timer_length):
             minutes += 1
             seconds = 0
     speak("Your" + str(int(original_time / 60)) + " minute and " +str(seconds - 1) + " second timer is complete")
+
+def listen ():
+    with mic as source:
+        audio = r.listen(source)
+        words = r.recognize_google(audio)
+        words = words.lower()
+        if "hey brew butler" in words:
+            get_command()

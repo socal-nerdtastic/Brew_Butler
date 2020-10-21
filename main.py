@@ -14,8 +14,12 @@ def main():
     log_name = datetime.datetime.now()
     log_name = ("Brew day " + str(log_name.month) + "-" + str(log_name.day) + "-" + str(log_name.year))
     log = open(log_name, 'a')
+    
+    helper.speak(helper.greeting())
+    time.sleep(5)
     command_thread.start()
-    #helper.speak(helper.greeting())
+    #while True:    
+        #helper.listen()
 
     
 

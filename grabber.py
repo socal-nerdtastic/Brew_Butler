@@ -19,7 +19,7 @@ def extract_or_all_grain(recipe):
     recipe = recipe.lower()
     url = "https://www.northernbrewer.com/products/"
     words = recipe.split()
-    print("got to extract or all grain ")
+    #print("got to extract or all grain ")
     
     if "extract" in recipe:
         print("extract")
