@@ -103,7 +103,9 @@ def execute_command(command):
             print(link_string)
             recipe_url = grabber.recipe_url_grabber(link_string)
             print("Downloading %s" % recipe_url)
-            wget.download(recipe_url, (title + ".pdf"))           
+            wget.download(recipe_url, (title + ".pdf"))
+    elif "quit" in command:
+        sys.exit()           
 # assists the execute_command function's timer elif
 # by processing user's voice input and returning the length of time to sleep         
 def get_timer(audio):
@@ -151,11 +153,44 @@ def timer(timer_length):
             minutes += 1
             seconds = 0
     speak("Your" + str(int(original_time / 60)) + " minute and " +str(seconds - 1) + " second timer is complete")
-
+    
+#listens in the background for the user to
+#call upon the voice command function then calls it for them.
+#currently WIP 
 def listen ():
-    with mic as source:
-        audio = r.listen(source)
-        words = r.recognize_google(audio)
-        words = words.lower()
-        if "hey brew butler" in words:
-            get_command()
+    print("listening")
+    try:
+        with mic as source:
+            audio = r.listen(source)
+            words = r.recognize_google(audio)
+            words = words.lower()
+            if "hey" in words:
+                print("returning true")
+                return True
+            else:
+                print("returning false 1")
+                return False
+    except:
+        print("returning false 2")
+        return False
+
+#calculates abv and returns a string like (abv_total%ABV)
+def abv_calculator():
+    og = float(input("What is the original gravity?\n"))
+    fg = float(input("What is the final gravity\n"))
+    abv = (og-fg) * 131.25
+    abv = round(abv, 2)
+    abv = str(abv)
+    abv = (abv + "% ABV")
+    return abv
+
+#These two equations allow the user to convert Liquid Malt Extract and Dry Malt Extract if they have to substitute.
+#They return an int so it can be formatted elsewhere.
+def lme_to_dme(lme):
+    dme = lme * (36/43)
+    dme = int(round(dme, 2))
+    return dme
+def dme_to_lme(dme):
+    lme = dme * (43/36)
+    lme = int(round(lme, 2))
+    return lme

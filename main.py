@@ -7,7 +7,6 @@ import time
 import playsound
 import threading
 import grabber
-#blah blah blah
 
 
 def main():
@@ -17,10 +16,15 @@ def main():
     log = open(log_name, 'a')
     
     helper.speak(helper.greeting())
-    time.sleep(5)
-    command_thread.start()
-    #while True:    
-        #helper.listen()
+    time.sleep(1)
+    #command_thread.start()
+    #TODO make the listen function run in the background like siri or google assistant and be called in the same manner.
+    while True:
+        if helper.listen() == True:
+            new_command = helper.get_command()
+            helper.execute_command(new_command)
+        else:
+            pass
 
     
 
@@ -34,6 +38,7 @@ def command():
     command = helper.get_command()
     helper.execute_command(command)
     command = ""
+
 
 
 main()

@@ -42,6 +42,7 @@ def extract_or_all_grain(recipe):
     #TODO re-prompt user for all grain or extract
 
 
+
 #This section creates a url, goes to the page via BeautifulSoup then parses the page looking for
 # the recipe pdf link. It then returns the link and turns it into a string to be used later in
 # recipe_url_grabber function.
