@@ -16,7 +16,7 @@ import webbrowser
 import urllib.parse
 import urllib.request 
 
-#sets up url for use in the recipe getter function
+
 
 
 #sets up the mic for voice commands
@@ -32,7 +32,7 @@ def speak(text):
     os.remove(filename)
     
 
-# Uses the datetime module to provide a greeting to use based on the time of day.
+# Uses the datetime module to provide a greeting to user based on the time of day.
 def greeting():
     now = datetime.datetime.now()
     current_time = now.hour
@@ -48,12 +48,22 @@ def greeting():
 
 # prompts the user for a command and returns it as a string for the execute command function
 def get_command():
-    with mic as source:
-        speak("What can I do for you?")
-        audio = r.listen(source)
-        command = r.recognize_google(audio)
-        print(command)
-        return command
+    trys = 0
+    try:
+        with mic as source:
+            speak("What can I do for you?")
+            audio = r.listen(source)
+            command = r.recognize_google(audio)
+            print(command)
+            return command
+    except:
+        if trys == 3:
+            speak("I'm having trouble hearing you, please try again later.")
+            return 1
+        else:
+            speak("I'm sorry, I didn't hear you. Please try again.")
+            trys = trys + 1
+            return 0
 
 # parses the command given and operates on it based on what key words it finds. 
 def execute_command(command):
@@ -104,8 +114,10 @@ def execute_command(command):
             recipe_url = grabber.recipe_url_grabber(link_string)
             print("Downloading %s" % recipe_url)
             wget.download(recipe_url, (title + ".pdf"))
-    elif "quit" in command:
-        sys.exit()           
+    elif "quit program" in command:
+        sys.exit()
+    elif "abv" in command:
+        abv_calculator()           
 # assists the execute_command function's timer elif
 # by processing user's voice input and returning the length of time to sleep         
 def get_timer(audio):
@@ -158,21 +170,21 @@ def timer(timer_length):
 #call upon the voice command function then calls it for them.
 #currently WIP 
 def listen ():
-    print("listening")
-    try:
-        with mic as source:
-            audio = r.listen(source)
-            words = r.recognize_google(audio)
-            words = words.lower()
-            if "hey" in words:
-                print("returning true")
-                return True
-            else:
-                print("returning false 1")
-                return False
-    except:
-        print("returning false 2")
-        return False
+    print("listen function start")
+    print("trying")
+    with mic as source:
+        audio = r.listen(source)
+        words = r.recognize_google_cloud(audio)
+        words = words.lower()
+        print(words)
+        if "hey" in words:
+            print("returning true")
+            return True
+        else:
+            print("sleeping...")
+            return False
+
+
 
 #calculates abv and returns a string like (abv_total%ABV)
 def abv_calculator():

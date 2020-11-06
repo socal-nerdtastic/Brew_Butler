@@ -58,10 +58,10 @@ def extract_or_all_grain(recipe):
 
 #Takes in the link_string and splits it with the delimiter of a quotation mark.
 #This works due to how Northern Brewer stores their recipes on an external source, Shopify.
-def recipe_url_grabber(link):
-    link = link.split('"', 2)
-    new_link = link[1]
-    return new_link
+#def recipe_url_grabber(link):
+    #link = link.split('"', 2)
+    #new_link = link[1]
+    #return new_link
 
 #recipe_url = recipe_url_grabber(link_string)
 #print(recipe_url)
