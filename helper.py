@@ -206,3 +206,11 @@ def dme_to_lme(dme):
     lme = dme * (43/36)
     lme = int(round(lme, 2))
     return lme
+
+# Enters notes into brew log via the GUI
+
+def gui_notes(note):
+    log = datetime.datetime.now()
+    log_name = ("Brew day " + str(log.month) + "-" + str(log.day) + "-" + str(log.year))
+    with open(log_name, 'a') as notes:
+        notes.write(str(log.hour) + ":" + str(log.minute) + "    " + str(note) + "\n")

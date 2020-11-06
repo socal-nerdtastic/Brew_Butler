@@ -8,6 +8,7 @@ import playsound
 import threading
 import grabber
 import tkinter as tk
+from tkinter import ttk
 
 
 class App(threading.Thread):
@@ -22,10 +23,41 @@ class App(threading.Thread):
     def run(self):
         self.root = tk.Tk()
         self.root.protocol("WM_DELETE_WINDOW", self.callback)
-        self.root.title("Brew Butler")
+        self.root.title("TBD")
+        self.tabControl = ttk.Notebook(self.root) 
+  
+        self.tab1 = ttk.Frame(self.tabControl) 
+        self.tab2 = ttk.Frame(self.tabControl) 
+  
+        self.tabControl.add(self.tab1, text ='Home') 
+        self.tabControl.add(self.tab2, text ='Calculations') 
+        self.tabControl.pack(expand = 1, fill ="both", padx = 5) 
+  
+        ttk.Label(self.tab1,  
+                text ="Timer").grid(column = 0, row = 0, padx = 30, pady = 30)
+                   
+        ttk.Button(self.tab1, 
+                text ="Voice Command", command = helper.get_command).grid(column = 1, row = 1, padx = 30, pady = 30)
 
-        label = tk.Label(self.root, text="Hello World")
-        label.pack()
+        ttk.Label(self.tab1,
+        text = "Notes").grid(column = 2, row = 0, padx = 30, pady = 30)
+
+        ttk.Entry(self.tab1).grid(column = 0, row = 1, padx = 30, pady = 30)
+
+        #time = int(ttk.Entry.get(self))
+        #print("time = " + time)
+
+        ttk.Entry(self.tab1).grid(column = 2, row = 1, padx = 30, pady = 30)
+        
+        #note = str(ttk.Entry.get(self))
+
+        #print("note = " + note)
+        
+        ttk.Button(self.tab1, 
+                text ="Start", command = lambda:[ttk.Entery.get(), helper.timer(time)]).grid(column = 0, row = 2, padx = 30, pady = 30)
+
+        ttk.Button(self.tab1, 
+                text ="Log", command = lambda: [helper.gui_notes(note)]).grid(column = 2, row = 2, padx = 30, pady = 30)
 
         self.root.mainloop()
 
@@ -40,12 +72,12 @@ def main():
     #helper.speak(helper.greeting())
     time.sleep(1)
     # Has the listen function run in the background like siri and can be called with the phrase "Hey Brew Butler".
-    while True:
-        if helper.listen() == True:
-            new_command = helper.get_command()
-            helper.execute_command(new_command)
-        else:
-            pass
+    #while True:
+        #if helper.listen() == True:
+            #new_command = helper.get_command()
+            #helper.execute_command(new_command)
+        #else:
+            #pass
 
     
 
