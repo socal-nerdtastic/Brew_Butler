@@ -8,16 +8,16 @@ import time
 import threading
 import tkinter as tk
 from tkinter import ttk
-from tkinter.messagebox import showerror
+from tkinter.messagebox import showerror, showinfo
 
 # installed library imports
-from gtts import gTTS
-import speech_recognition as sr
-import playsound
+# ~ from gtts import gTTS
+# ~ import speech_recognition as sr
+# ~ import playsound
 
 # module level imports
-import grabber
-import helper
+# ~ import grabber
+# ~ import helper
 
 class Tab1(ttk.Frame):
     def __init__(self, master=None, **kwargs):
@@ -37,9 +37,15 @@ class Tab1(ttk.Frame):
 
         ttk.Label(self, text = "Notes").grid(column = 2, row = 0, padx = 30, pady = 30)
 
-        # 2 lines required here, because we want to use the Entry object later to get a value
-        self.time = ttk.Entry(self)
-        self.time.grid(column = 0, row = 1, padx = 30, pady = 30)
+        # make a tiny custom widget to show time
+        time_frame = tk.Frame(self)
+        self.time_min = ttk.Entry(time_frame, width=5)
+        self.time_min.pack(side=tk.LEFT)
+        lbl=tk.Label(time_frame, text=":")
+        lbl.pack(side=tk.LEFT)
+        self.time_sec = ttk.Entry(time_frame, width=5)
+        self.time_sec.pack(side=tk.LEFT)
+        time_frame.grid(column = 0, row = 1, padx = 30, pady = 30)
 
         self.notes = ttk.Entry(self)
         self.notes.grid(column = 2, row = 1, padx = 30, pady = 30)
@@ -59,17 +65,24 @@ class Tab1(ttk.Frame):
 
     def start_pressed(self):
         try:
-            seconds = int(self.time.get())
-            self.timer(seconds)
+            seconds = int(self.time_sec.get() or 0)
+            minutes = int(self.time_min.get() or 0)
+            self.timer(seconds + minutes*60)
         except ValueError:
-            showerror("Error", "Please enter an integer number of seconds")
+            showerror("Error", "Please enter an integer number of seconds and minutes")
 
     def timer(self, seconds_left=0):
-        self.time.delete(0, tk.END)
-        self.time.insert(tk.END, seconds_left)
+        minutes, seconds = divmod(seconds_left, 60)
+        self.time_min.delete(0, tk.END)
+        self.time_min.insert(tk.END, minutes)
+        self.time_sec.delete(0, tk.END)
+        self.time_sec.insert(tk.END, f"{seconds:0>2}")
         self.after_cancel(self.timer_obj)
         if seconds_left > 0:
             self.timer_obj = self.after(1000, self.timer, seconds_left-1)
+        else:
+            # sound alarm
+            showinfo('ALARM!', "timer is done")
 
     def log_pressed(self):
         log_name = datetime.datetime.now()
